@@ -91,9 +91,6 @@ public class LotteryService {
     }
 
     public int getRemainingAttempts(String userId) {
-        //LotteryAttempt attempt = (LotteryAttempt) redisTemplate.opsForHash().get(ATTEMPT_KEY, userId);
-        //return (attempt != null) ? attempt.getAttempts(): 0;
-
         LinkedHashMap attemptMap = (LinkedHashMap) redisTemplate.opsForHash().get(ATTEMPT_KEY, userId);
         Integer attempt = (Integer) attemptMap.get("attempts");
         return (attempt != null) ? attempt : 0;
@@ -101,7 +98,6 @@ public class LotteryService {
 
     @CacheEvict(value = "lotteryCache", key = "#userId")
     public synchronized String drawPrize(String userId) {
-        System.out.println("inside Draw Prize service");
         // Preventing same user resubmit within 10 seconds.
         if (redisTemplate.hasKey(SUBMISSION_KEY + userId)) {
             return "Please wait for 10 seconds before submitting again";
@@ -153,7 +149,6 @@ public class LotteryService {
             }
         }
 
-        System.out.println("!!!!!!!!!!! Sending Message Queue - No Prize Won !!!!!!!!!!!!!");
         //rocketMQTemplate.convertAndSend(LOTTERY_ATTEMPT_TOPIC, "User " + userId + " drew a prize but won nothing");
 
         // Return No Prize Won Message
@@ -164,7 +159,6 @@ public class LotteryService {
     private void sendDeductionMessage(String userId) {
         //Reduce User Attempt Count. This Logic suppose inside Consumer Listener to perform. Temporary replace here
         LotteryAttempt userAttempt = (LotteryAttempt) attemptRedisTemplate.opsForHash().get(ATTEMPT_KEY, userId);
-        System.out.println("CCCCCCCCCCCCC ="+userAttempt);
         userAttempt.setAttempts(userAttempt.getAttempts()-1);
         attemptRedisTemplate.opsForHash().put(ATTEMPT_KEY, userId, userAttempt);
 

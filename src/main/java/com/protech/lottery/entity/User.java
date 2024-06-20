@@ -16,5 +16,4 @@ public class User implements Serializable {
     private String id;
     private int prizeId;
     private String userId;
-    //private int lotteryAttempts;
 }

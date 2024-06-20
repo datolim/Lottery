@@ -19,12 +19,10 @@ public class LotteryController {
     @PostMapping("/draw/{userId}")
     public ResponseEntity<String> drawPrize(@PathVariable String userId) {
         return ResponseEntity.ok(lotteryService.drawPrize(userId));
-        //return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/userPrize/{userId}")
     public ResponseEntity<Prize> getUserPrize(@PathVariable String userId) {
-        System.out.println("____________________________________________________");
         Prize prize = lotteryService.getUserPrize(userId);
         return ResponseEntity.ok(prize);
     }

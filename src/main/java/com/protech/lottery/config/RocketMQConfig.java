@@ -59,6 +59,7 @@ public class RocketMQConfig {
         // Other configuration like subscription, etc.
         return consumer;
     }
+
 /*
     @Bean
     public RocketMQTemplate rocketMQTemplate(DefaultMQProducer producer) {
