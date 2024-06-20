@@ -1,0 +1,11 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+      files: docker-compose.yml
+
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: lotteryGroup
+    send-msg-timeout: 10000
