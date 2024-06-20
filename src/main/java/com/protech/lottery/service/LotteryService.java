@@ -46,8 +46,6 @@ public class LotteryService {
     //@Autowired
     //private RocketMQTemplate rocketMQTemplate;
 
-    //private RocketMQTemplate rocketMQTemplate;
-
     //@PostConstruct
     //public void init() {
     //    this.rocketMQTemplate = new RocketMQTemplate();
@@ -151,7 +149,6 @@ public class LotteryService {
 
         //rocketMQTemplate.convertAndSend(LOTTERY_ATTEMPT_TOPIC, "User " + userId + " drew a prize but won nothing");
 
-        // Return No Prize Won Message
         sendDeductionMessage(userId);
         return "Better luck next time!";
     }
