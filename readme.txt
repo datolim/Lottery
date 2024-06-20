@@ -11,6 +11,8 @@
      docker logs rocketmq-nameserver - ensure it is up
      docker logs rocketmq-broker     - ensure it is up
 
+
+
 **********
   Test
 **********

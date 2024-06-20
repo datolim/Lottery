@@ -7,6 +7,7 @@ import org.apache.rocketmq.common.ServiceState;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 
 @Configuration
 public class RocketMQConfig {
@@ -17,12 +18,15 @@ public class RocketMQConfig {
     @Value("${rocketmq.producer.group}")
     private String producerGroup;
 
+    @Value("${rocketmq.consumer.group}")
+    private String consumerGroup;
+
     @Value("${rocketmq.producer.send-msg-timeout}")
     private int sendMsgTimeout;
 
     @Bean
     public DefaultMQProducer defaultMQProducer() {
-        System.out.println("Server MQ Name = "+nameServer+", Producer Group = "+producerGroup+", Send Message Timeout ="+sendMsgTimeout);
+        System.out.println("Server MQ Name = "+nameServer+", Producer Group = "+producerGroup+", Consumer Group = "+consumerGroup+ ", Send Message Timeout ="+sendMsgTimeout);
         DefaultMQProducer producer = new DefaultMQProducer(producerGroup);
         producer.setNamesrvAddr(nameServer);
         producer.setSendMsgTimeout(sendMsgTimeout);
@@ -48,101 +52,20 @@ public class RocketMQConfig {
         return producer;
     }
 
-/*
-    @Value("${rocketmq.name-server}")
-    private String nameServer;
-
-    @Bean
-    public RocketMQTemplate rocketMQTemplate() {
-        RocketMQTemplate rocketMQTemplate = new RocketMQTemplate();
-        rocketMQTemplate.setProducerGroup("lottery-group");
-        rocketMQTemplate.setNamesrvAddr(nameServer);
-        return rocketMQTemplate;
+    @Bean(destroyMethod = "shutdown")
+    public DefaultMQPushConsumer defaultMQPushConsumer() {
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(consumerGroup);
+        consumer.setNamesrvAddr(nameServer);
+        // Other configuration like subscription, etc.
+        return consumer;
     }
- */
-
+/*
     @Bean
     public RocketMQTemplate rocketMQTemplate(DefaultMQProducer producer) {
         RocketMQTemplate template = new RocketMQTemplate();
-//        template.setProducerGroup("lottery-group");
-//        template.setNamesrvAddr(nameServer);
-//        template.setProducer(producer);
+        //template.setProducer(producer);
         return template;
         //return new RocketMQTemplate();
     }
-
+ */
 }
-
-/*
-package com.protech.lottery.config;
-
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.converter.MessageConverter;
-
-@Configuration
-public class RocketMQConfig {
-
-    @Bean
-    public RocketMQTemplate rocketMQTemplate() {
-        return new RocketMQTemplate();
-    }
-
-    @Bean
-    public MessageConverter messageConverter() {
-        return new MappingJackson2MessageConverter();
-    }
-}
-*/
-/*
-package com.protech.lottery.config;
-
-
-import org.apache.rocketmq.spring.annotation.EnableRocketMQ;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.apache.rocketmq.client.exception.MQClientException;
-import org.apache.rocketmq.spring.support.DefaultRocketMQListenerContainer;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.converter.MessageConverter;
-
-@Configuration
-@EnableRocketMQ
-public class RocketMQConfig {
-
-    @Bean
-    public RocketMQTemplate rocketMQTemplate() {
-        return new RocketMQTemplate();
-    }
-
-    @Bean
-    public MessageConverter messageConverter() {
-        return new MappingJackson2MessageConverter();
-    }
-}
-
-package com.protech.lottery.config;
-
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class RocketMQConfig {
-
-    @Value("${rocketmq.name-server}")
-    private String nameServer;
-
-    @Bean
-    public RocketMQTemplate rocketMQTemplate() {
-        RocketMQTemplate rocketMQTemplate = new RocketMQTemplate();
-        rocketMQTemplate.setProducerGroup("lottery-group");
-        rocketMQTemplate.setNamesrvAddr(nameServer);
-        return rocketMQTemplate;
-    }
-}
-*/

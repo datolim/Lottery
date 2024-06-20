@@ -9,3 +9,11 @@ rocketmq:
   producer:
     group: lotteryGroup
     send-msg-timeout: 10000
+  consumer:
+    group: lotteryConsumerGroup
+  topic: LotteryAttemptTopic
+
+logging:
+  level:
+    root: INFO
+    org.apache.rocketmq: DEBUG

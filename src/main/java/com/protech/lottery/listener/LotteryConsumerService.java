@@ -9,7 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import com.protech.lottery.entity.*;
 
 @Component
-@DependsOn(value="rocketMQTemplate")
+//@DependsOn(value="rocketMQTemplate")
 @RocketMQMessageListener(topic = "LotteryAttemptTopic", consumerGroup = "lotteryGroup")
 public class LotteryConsumerService implements RocketMQListener<String> {
 
